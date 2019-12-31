@@ -34,10 +34,20 @@ export default {
       const uid = context.rootState.authentication.user.uid
       const rid = context.rootState.room.currentRoomId
       const db = firebase.firestore()
+
+      let to = []
+      context.rootGetters['user/joinUsers'].forEach((u) => {
+        if (body.indexOf('@'+u[1].displayName) != -1) {
+          to.push(u[0])
+        }
+      })
+      if (to.length == 0) to.push('*')
+      else if (to.indexOf(uid) == -1) to.push(uid)
+
       db.collection("messages").add({
         body: body,
         from: uid,
-        to: [],
+        to: to,
         isDeleted: false,
         rid: rid,
         createdAt: Number(new Date())

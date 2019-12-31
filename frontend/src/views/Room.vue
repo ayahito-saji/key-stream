@@ -5,8 +5,12 @@
       <input type="text" v-model="email" placeholder="メールアドレス">
       <button @click="invite()">ユーザーを招待する</button>
     </div>
+    <ul>
+      <li v-for="joinUser in joinUsers">{{ joinUser[1].displayName }}</li>
+      <li v-for="invitedUser in invitedUsers">{{ invitedUser[1].displayName }}(招待中)</li>
+    </ul>
     <div v-for="message in messages">
-      {{ message[1].from }}. {{ message[1].body }}
+      {{ findUserById(message[1].from)[1].displayName }}: {{ message[1].body }}
     </div>
     <div>
       <input type="text" v-model="message" placeholder="メッセージ">
@@ -32,7 +36,9 @@
       joinRooms: function() { return this.$store.state.room.joinRooms },
       rid: function() { return this.$store.state.room.currentRoomId },
       room: function() { return this.rid ? this.joinRooms[this.rid] : null },
-      messages: function() { return this.$store.getters['message/messages'] }
+      messages: function() { return this.$store.getters['message/messages'] },
+      joinUsers: function() { return this.$store.getters['user/joinUsers'] },
+      invitedUsers: function() { return this.$store.getters['user/invitedUsers'] },
     },
     methods: {
       created() {
@@ -51,6 +57,9 @@
         console.log("speaking")
         this.$store.dispatch('message/createMessage', this.message)
         this.message = ''
+      },
+      findUserById(uid) {
+        return this.$store.getters['user/user'](uid)
       }
     },
     created() {
