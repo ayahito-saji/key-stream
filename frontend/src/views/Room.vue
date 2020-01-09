@@ -12,10 +12,7 @@
     <div v-for="message in messages">
       {{ findUserById(message[1].from)[1].displayName }}: {{ message[1].body }}
     </div>
-    <div>
-      <input type="text" v-model="message" placeholder="メッセージ">
-      <button @click="speak()">送信</button>
-    </div>
+    <Textbox/>
   </div>
   <div v-else>
     <h1>Room not found</h1>
@@ -23,12 +20,15 @@
 </template>
 
 <script>
+  import Textbox from '../components/Textbox'
   export default {
     name: 'room',
+    components: {
+      Textbox
+    },
     data() {
       return {
-        email: '',
-        message: ''
+        email: ''
       }
     },
     computed: {
@@ -52,11 +52,6 @@
         console.log("inviting room")
         this.$store.dispatch('room/inviteUser', {email: this.email, rid: this.rid})
         this.email = ''
-      },
-      speak() {
-        console.log("speaking")
-        this.$store.dispatch('message/createMessage', this.message)
-        this.message = ''
       },
       findUserById(uid) {
         return this.$store.getters['user/user'](uid)

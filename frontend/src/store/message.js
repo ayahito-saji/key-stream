@@ -5,7 +5,8 @@ import 'firebase/firestore'
 export default {
   namespaced: true,
   state: {
-    messages: {}
+    messages: {},
+    message: ''
   },
   getters: {
     messages: function (state, getters, rootState) {
@@ -18,6 +19,9 @@ export default {
     }
   },
   mutations: {
+    syncMessage: function(state, message) {
+      state.message = message
+    }
   },
   actions: {
     updateMessage(context, querySnapshot) {
@@ -28,8 +32,9 @@ export default {
       })
       context.state.messages = Object.assign({}, context.state.messages, messages)
     },
-    createMessage(context, body) {
-      console.log(body)
+    createMessage(context) {
+      const body = context.state.message
+
       if (body == '') return false
       const uid = context.rootState.authentication.user.uid
       const rid = context.rootState.room.currentRoomId
@@ -58,6 +63,7 @@ export default {
       .catch(function(error) {
         console.error("Error: ", error)
       })
+      context.commit('syncMessage', '')
     }
   }
 }
