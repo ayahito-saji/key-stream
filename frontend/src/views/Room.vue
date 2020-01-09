@@ -1,6 +1,6 @@
 <template>
   <div v-if="room">
-    <h1>{{ room.displayName }}</h1>{{ rid }}<button>ルームから退出する</button>
+    <h1>{{ room.displayName }}</h1>{{ rid }}<button @click="leave()">ルームから退出する</button>
     <div>
       <input type="text" v-model="email" placeholder="メールアドレス">
       <button @click="invite()">ユーザーを招待する</button>
@@ -52,6 +52,10 @@
         console.log("inviting room")
         this.$store.dispatch('room/inviteUser', {email: this.email, rid: this.rid})
         this.email = ''
+      },
+      leave() {
+        console.log("leaving room")
+        this.$store.dispatch('room/leaveRoom', this.rid)
       },
       findUserById(uid) {
         return this.$store.getters['user/user'](uid)

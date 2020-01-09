@@ -53,8 +53,8 @@ export default {
             console.error("Error: ", error)
           })
 
-          db.collection('rooms').where('joinUsers', 'array-contains', user.uid).onSnapshot(querySnapshot => context.dispatch('room/updateJoinRoom', querySnapshot, { root: true }))
-          db.collection('rooms').where('invitedUsers', 'array-contains', user.uid).onSnapshot(querySnapshot => context.dispatch('room/updateInvitedRoom', querySnapshot, { root: true }))
+          db.collection('rooms').where('isDeleted', '==', false).where('joinUsers', 'array-contains', user.uid).onSnapshot(querySnapshot => context.dispatch('room/updateJoinRoom', querySnapshot, { root: true }))
+          db.collection('rooms').where('isDeleted', '==', false).where('invitedUsers', 'array-contains', user.uid).onSnapshot(querySnapshot => context.dispatch('room/updateInvitedRoom', querySnapshot, { root: true }))
 
         } else {
           // ユーザーログアウト

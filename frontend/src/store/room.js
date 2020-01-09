@@ -67,6 +67,45 @@ export default {
 
       console.log(rid)
     },
+    leaveRoom(context, rid) {
+      const uid = context.rootState.authentication.user.uid
+
+      const db = firebase.firestore()
+
+      db.collection("rooms").doc(rid).get().then(function(snapshot) {
+        let updateData = null;
+        if (snapshot.data().joinUsers.length > 1) {
+          updateData = {
+            joinUsers: firebase.firestore.FieldValue.arrayRemove(uid)
+          }
+        } else {
+          updateData = {
+            joinUsers: firebase.firestore.FieldValue.arrayRemove(uid),
+            isDeleted: true
+          }
+        }
+
+        db.collection("rooms").doc(rid).update(updateData)
+        .then(function() {
+          console.log("Success Leave")
+        })
+        .catch(function(error) {
+          console.error("Error: ", error)
+        })
+      })
+
+      db.collection("users").doc(uid).update({
+        joinRooms: firebase.firestore.FieldValue.arrayRemove(rid),
+      })
+      .then(function() {
+        console.log("Success Leave")
+      })
+      .catch(function(error) {
+        console.error("Error: ", error)
+      })
+
+      console.log(rid)
+    },
     createRoom(context, displayName) {
       console.log(displayName)
       if (displayName == '') return false

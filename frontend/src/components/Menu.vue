@@ -44,6 +44,7 @@
       create() {
         console.log("creating room")
         this.$store.dispatch('room/createRoom', this.roomName)
+        this.roomName = ''
       }
     }
   }
