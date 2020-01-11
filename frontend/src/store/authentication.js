@@ -1,6 +1,7 @@
 import firebase from 'firebase'
 import 'firebase/auth'
 import 'firebase/firestore'
+import 'firebase/messaging'
 
 export default {
   namespaced: true,
@@ -56,6 +57,25 @@ export default {
           db.collection('rooms').where('isDeleted', '==', false).where('joinUsers', 'array-contains', user.uid).onSnapshot(querySnapshot => context.dispatch('room/updateJoinRoom', querySnapshot, { root: true }))
           db.collection('rooms').where('isDeleted', '==', false).where('invitedUsers', 'array-contains', user.uid).onSnapshot(querySnapshot => context.dispatch('room/updateInvitedRoom', querySnapshot, { root: true }))
 
+          const messaging = firebase.messaging()
+          messaging.usePublicVapidKey("BC3QJV1oc89uon4qX27akhP74mr4f6_BAKqYtDON2_i25wTiBSB0IyWf8uPV1zmBlGDNzntFbB7bJN_ETC8_mlo")
+
+          messaging.requestPermission().then(() => {
+            console.log('Notification permission granted.');
+            messaging.getToken().then((token) => {
+              db.collection("users").doc(user.uid).set({
+                pushTokens: firebase.firestore.FieldValue.arrayUnion(token),
+              }, { merge: true })
+              .then(function() {
+                console.log("register pushTokens")
+              })
+              .catch(function(error) {
+                console.error("Error: ", error)
+              })
+            })
+          }).catch((err) => {
+            console.log('Unable to get permission to notify.', err);
+          });
         } else {
           // ユーザーログアウト
           context.commit('setUser', null)
