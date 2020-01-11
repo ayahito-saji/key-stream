@@ -1,22 +1,27 @@
 <template>
-  <div v-if="room">
-    <h1>{{ room.displayName }}</h1>{{ rid }}<button @click="leave()">ルームから退出する</button>
-    <div>
-      <input type="text" v-model="email" placeholder="メールアドレス">
-      <button @click="invite()">ユーザーを招待する</button>
+  <v-app>
+    <div v-if="room" class="room">
+      <h1>{{ room.displayName }}</h1>{{ rid }}
+      <v-btn @click="leave()" class="ma-2" tile outlined color="error">
+        <v-icon left>mdi-account-arrow-right</v-icon> ルームから退出する
+      </v-btn>
+      <div>
+        <input type="text" v-model="email" placeholder="メールアドレス">
+        <button @click="invite()">ユーザーを招待する</button>
+      </div>
+      <ul>
+        <li v-for="joinUser in joinUsers">{{ joinUser[1].displayName }}</li>
+        <li v-for="invitedUser in invitedUsers">{{ invitedUser[1].displayName }}(招待中)</li>
+      </ul>
+      <div v-for="message in messages">
+        {{ findUserById(message[1].from)[1].displayName }}: {{ message[1].body }}
+      </div>
+      <Textbox/>
     </div>
-    <ul>
-      <li v-for="joinUser in joinUsers">{{ joinUser[1].displayName }}</li>
-      <li v-for="invitedUser in invitedUsers">{{ invitedUser[1].displayName }}(招待中)</li>
-    </ul>
-    <div v-for="message in messages">
-      {{ findUserById(message[1].from)[1].displayName }}: {{ message[1].body }}
+    <div v-else>
+      <h1>Room not found</h1>
     </div>
-    <Textbox/>
-  </div>
-  <div v-else>
-    <h1>Room not found</h1>
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -28,7 +33,8 @@
     },
     data() {
       return {
-        email: ''
+        email: '',
+        drawer_r: false
       }
     },
     computed: {
@@ -75,3 +81,10 @@
     }
   }
 </script>
+
+<style scoped>
+.v-application .error--text {
+  display: block;
+  margin: auto!important;
+}
+</style>

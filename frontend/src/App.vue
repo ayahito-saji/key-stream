@@ -17,3 +17,8 @@
     }
   }
 </script>
+<!--<style lang="scss">
+  $color-pack: false;
+
+  @import '~vuetify/src/styles/main.sass';
+</style>-->
