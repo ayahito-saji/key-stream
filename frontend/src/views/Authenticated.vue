@@ -1,10 +1,10 @@
 <template>
   <v-app>
     <div class="chat">
-      <v-app-bar class="grey darken-4" dark>
+      <v-app-bar fixed class="grey darken-4" dark>
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       </v-app-bar>
-      <v-navigation-drawer v-model="drawer" width="85%" absolute temporary>
+      <v-navigation-drawer v-model="drawer" width="85%" fixed temporary style="z-index: 10000;">
         <Menu/>
       </v-navigation-drawer>
       <router-view/>

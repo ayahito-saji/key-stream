@@ -2,6 +2,7 @@
   <v-app>
     <div v-if="user" class="menu">
       <v-list>
+        <br>
         <v-subheader>プロフィール</v-subheader>
         <v-list-item>
           <v-list-item-icon>
