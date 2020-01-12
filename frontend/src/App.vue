@@ -3,7 +3,9 @@
     <router-view/>
   </div>
   <div v-else>
-    Loading...
+    <div class="loading-wrap">
+      <v-progress-circular indeterminate color="blue darken-4" :size="60" :width="8" class="loading"></v-progress-circular>
+    </div>
   </div>
 </template>
 <script>
@@ -17,3 +19,17 @@
     }
   }
 </script>
+<style lang="scss">
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &-wrap {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+  }
+}
+</style>

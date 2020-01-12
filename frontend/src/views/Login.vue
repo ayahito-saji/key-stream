@@ -1,8 +1,11 @@
 <template>
-  <div>
-    <button @click="login()">Login</button>
-    <router-link to="/about">戻る</router-link>
-  </div>
+  <v-app>
+    <div class="login">
+      <p class="login__text">Googleアカウントで<br>ログインします</p>
+      <v-btn @click="login()" x-large width="70%" max-width="300px" class="grey darken-4" dark>Login</v-btn><br>
+      <v-btn to="/about" text large class="login__back">もどる</v-btn>
+    </div>
+  </v-app>
 </template>
 
 <script>
@@ -25,3 +28,21 @@
     }
   }
 </script>
+
+<style scoped lang="scss">
+.login {
+  min-height: 100vh;
+  text-align: center;
+
+  &__text {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 28vh 0;
+  }
+
+  &__back {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+}
+</style>
