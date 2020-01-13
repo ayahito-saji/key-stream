@@ -2,7 +2,6 @@
   <v-app>
     <div v-if="user" class="menu">
       <v-list>
-        <br>
         <v-subheader>プロフィール</v-subheader>
         <v-list-item>
           <v-list-item-icon>
@@ -17,20 +16,27 @@
           </v-list-item-icon>
           <v-list-item-title>{{ user.email }}</v-list-item-title>
         </v-list-item>
-        <v-list-item>
-          <v-btn @click="logout()"　text small color="error" class="logout">ログアウト</v-btn>
+
+        <v-list-item @click="logout()">
+          <v-list-item-icon>
+            <v-icon color="error">mdi-logout</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="error--text">ログアウト</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
 
         <v-subheader>ルーム</v-subheader>
-        <v-list-item v-for="(invitedRoom, rid) in invitedRooms">
-          <a href="javascript:void(0)" @click="join(rid)" class="room-link"><strong>{{ invitedRoom.displayName }}(招待中)</strong></a>
+        <v-list-item v-for="(invitedRoom, rid) in invitedRooms" v-key="rid" @click="join(rid)">
+          <v-list-item-icon>
+            <v-icon color="primary">mdi-message-text</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title class="primary--text"><string>{{ invitedRoom.displayName }}(招待中)</string></v-list-item-title>
         </v-list-item>
-        <v-list-item v-for="(joinRoom, rid) in joinRooms" class="rooms">
+        <v-list-item v-for="(joinRoom, rid) in joinRooms" v-key="rid" class="rooms" @click="$router.push('/'+rid)">
           <v-list-item-icon>
             <v-icon>mdi-message-text</v-icon>
           </v-list-item-icon>
-          <v-btn text large color="blue darken-4" :to="'/'+rid">{{ joinRoom.displayName }}</v-btn>
+          <v-list-item-title>{{ joinRoom.displayName }}</v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
 
